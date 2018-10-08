@@ -7,7 +7,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@sentry/browser": "^4.0.6",
-    "@socialgouv/code-du-travail-css": "^1.0.3",
+    "@socialgouv/code-du-travail-css": "^1.0.4",
     "@socialgouv/code-du-travail-ui": "^1.2.3",
     "@zeit/next-css": "^1.0.1",
     "date-fns": "^1.29.0",
