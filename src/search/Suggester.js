@@ -62,7 +62,8 @@ const renderSuggestionsContainer = ({ containerProps, children, query }) => (
 
 const onSuggestionSelected = (e, suggestion, query) => {
   e.preventDefault();
-  Router.pushRoute(getRouteBySource(suggestion.suggestion._source.source), {
+  Router.pushRoute("contenu", {
+    source: getRouteBySource(suggestion.suggestion._source.source),
     slug: suggestion.suggestion._source.slug,
     q: query,
     search: 0
