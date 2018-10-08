@@ -2,6 +2,7 @@ import memoizee from "memoizee";
 import React from "react";
 import { Container } from "@socialgouv/code-du-travail-ui";
 import { withRouter } from "next/router";
+import debounce from "lodash.debounce";
 
 import AsyncFetch from "../lib/AsyncFetch";
 import Suggester from "./Suggester";
@@ -30,12 +31,6 @@ const Disclaimer = () => (
   </div>
 );
 
-const FormSearchButton = () => (
-  <button type="submit" className="btn btn__img btn__img__search">
-    <span className="hidden">Rechercher</span>
-  </button>
-);
-
 const fetchResults = (query, endPoint = "search") => {
   const url = `${process.env.API_URL}/${endPoint}?q=${query}`;
   return fetch(url).then(response => {
@@ -54,36 +49,93 @@ const fetchResultsSearch = memoizee(
   { promise: true }
 );
 
+const fetchResultsSuggestDebounced = debounce(
+  query => fetchResults(query, "suggest"),
+  200
+);
+
 // memoize suggestions results
 const fetchResultsSuggest = memoizee(
   query =>
-    (query && query.length > 2 && fetchResults(query, "suggest")) ||
+    (query && query.length > 2 && fetchResultsSuggestDebounced(query)) ||
     Promise.resolve(),
   { promise: true }
 );
 
-export const SearchQuery = ({ query }) => (
-  <AsyncFetch
-    autoFetch={true}
-    fetch={() => fetchResultsSearch(query)}
-    render={({ status, result, clear }) => (
-      <div>
-        <div style={{ textAlign: "center" }}>
-          {status === "loading" ? "..." : " "}
-        </div>
-        <div>
-          {status === "success" && result && <SearchResults data={result} />}
-        </div>
+export class SearchQuery extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.query === this.props.query) {
+      return false;
+    }
+    return true;
+  }
+  render() {
+    const { query, render, router, filters } = this.props;
+    return (
+      <AsyncFetch
+        autoFetch={true}
+        fetch={() => fetchResultsSearch(query)}
+        render={args => render({ ...args, query, filters })}
+      />
+    );
+  }
+}
+
+SearchQuery.defaultProps = {
+  render: ({ status, result, clear, query, filters }) => (
+    <div>
+      <div style={{ textAlign: "center" }}>
+        {status === "loading" ? "..." : " "}
       </div>
-    )}
-  />
-);
+      <div>
+        {status === "success" &&
+          result && (
+            <SearchResults filters={filters} query={query} data={result} />
+          )}
+      </div>
+    </div>
+  )
+};
 
-// dont set the submitQuery when ?search=0
-const getQueryParam = () =>
-  Router.query.search ? Router.query.search === "0" && "" : Router.query.q;
+const _SearchQuery = withRouter(SearchQuery);
 
-// handle search state
+// todo: add some data here
+// detect branche
+// detect theme
+// detect region
+const guessTagsFromQuery = query => {
+  const tags = {};
+  if (!query) {
+    return tags;
+  }
+  if (query.match("convention collective")) {
+    tags.source = "idcc";
+  }
+  if (query.match("salaire")) {
+    tags.theme = "salaire";
+  }
+  if (query.match("metallurgie")) {
+    tags.branche = "metallurgie";
+  }
+  if (query.match("boulangerie")) {
+    tags.branche = "boulangerie";
+  }
+  return tags;
+};
+
+/**
+handle search state
+=======
+/** handle search state
+>>>>>>> 0e84494... fix(search): perfs optims :
+
+here we keep state for :
+ - the `query` inside the autosuggest input
+ - the `resultsQuery` that is used to display the result list
+
+We sync to the router to update the search box and results when the url asks it with a `?query=search` param.
+*/
+
 class Search extends React.Component {
   state = {
     // query in the input box
@@ -140,8 +192,11 @@ class Search extends React.Component {
 
   render() {
     const { query, resultsQuery } = this.state;
+    const filters = guessTagsFromQuery(resultsQuery);
+
     return (
       <SearchView
+        filters={filters}
         query={query}
         resultsQuery={resultsQuery}
         onChange={this.onChange}
@@ -151,7 +206,10 @@ class Search extends React.Component {
   }
 }
 
-const SearchView = ({ query, resultsQuery, onChange, onSubmit }) => (
+/*
+  SearchBox + Results
+*/
+const SearchView = ({ query, resultsQuery, onChange, onSubmit, filters }) => (
   <div>
     <div className="section-white shadow-bottom">
       <Container>
@@ -168,12 +226,17 @@ const SearchView = ({ query, resultsQuery, onChange, onSubmit }) => (
               query={query}
               getResults={() => fetchResultsSuggest(query)}
             />
-            <FormSearchButton />
+            <button type="submit" className="btn btn__img btn__img__search">
+              <span className="hidden">Rechercher</span>
+            </button>
           </form>
         </div>
       </Container>
     </div>
-    {(resultsQuery && <SearchQuery query={resultsQuery} />) || null}
+    {(resultsQuery && (
+      <_SearchQuery filters={filters} query={resultsQuery} />
+    )) ||
+      null}
   </div>
 );
 

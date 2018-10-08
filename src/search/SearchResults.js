@@ -1,11 +1,12 @@
 import React from "react";
 import { withRouter } from "next/router";
 
-import { Alert } from "@socialgouv/code-du-travail-ui";
+import { Section, Alert } from "@socialgouv/code-du-travail-ui";
 
 import FeedbackForm from "../common/FeedbackForm.js";
 import SeeAlso from "../common/SeeAlso";
 import { Link } from "../../routes";
+import DecisionTree from "../lib/decision/DecisionTree";
 
 import { getLabelBySource, getRouteBySource } from "../sources";
 
@@ -80,40 +81,60 @@ const ResultItem = withRouter(({ _id, _source, highlight, router }) => {
   );
 });
 
+const Results = ({ results }) => (
+  <div className="search-results">
+    <ul className="search-results__list">
+      {results.map(result => (
+        <ResultItem key={result._source.slug} {...result} />
+      ))}
+    </ul>
+  </div>
+);
+
 class SearchResults extends React.Component {
   render() {
     let data = this.props.data;
     let query = this.props.query;
-
     // No results.
     if (!data || !data.hits || !data.hits.total) {
       return (
         <React.Fragment>
-          <div className="section-light">
-            <div className="container">
-              <Alert category="primary">
-                Nous n’avons pas trouvé de résultat pour votre recherche.
-              </Alert>
-            </div>
-          </div>
+          <Section light>
+            <Alert category="primary">
+              Nous n’avons pas trouvé de résultat pour votre recherche.
+            </Alert>
+          </Section>
           <FeedbackForm query={query} />
         </React.Fragment>
       );
     }
 
+    // hardcode which result can be filterable.
+    const filterableResults = data.hits.hits.filter(
+      hit => ["idcc", "faq"].indexOf(hit._source.source) > -1
+    );
+
+    if (filterableResults.length > 1) {
+      return (
+        <DecisionTree
+          data={filterableResults}
+          filters={{}}
+          render={({ results }) => {
+            return (
+              <Section light>
+                <Results results={results.map(r => ({ _source: r }))} />
+              </Section>
+            );
+          }}
+        />
+      );
+    }
+
     return (
       <React.Fragment>
-        <div className="section-light">
-          <div className="container">
-            <div className="search-results">
-              <ul className="search-results__list">
-                {data.hits.hits.map(result => (
-                  <ResultItem key={result["_id"]} {...result} />
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
+        <Section light>
+          <Results results={data.hits.hits} />
+        </Section>
         <SeeAlso />
         <FeedbackForm query={query} />
       </React.Fragment>
