@@ -32,6 +32,20 @@ module.exports = routes()
     pattern: "/code-du-travail/:slug"
   })
 
+  // http://localhost:3000/convention-collective-kali/boulangerie
+  .add({
+    name: "kali",
+    page: "kali",
+    pattern: "/convention-collective-kali/:slug"
+  })
+
+  // http://localhost:3000/convention-collective-idcc/boulangerie
+  .add({
+    name: "idcc",
+    page: "idcc",
+    pattern: "/convention-collective-idcc/:slug"
+  })
+
   // theme navigation
   //
   // http://localhost:3000/themes
