@@ -20,8 +20,8 @@ PORT=3000
 Puis :
 
 ```bash
-$ npm install
-$ npm run dev
+$ yarn install
+$ yarn dev
 ```
 
 ## Intégration HTML/CSS

@@ -1,11 +1,15 @@
 FROM node:10.8.0-alpine
 
 COPY package.json /app/package.json
-COPY package-lock.json /app/package-lock.json
+COPY yarn.lock /app/yarn.lock
 
 WORKDIR /app
 
-RUN npm install
+RUN npm install -g yarn
+
+# install everything
+
+RUN NODE_ENV=development yarn install
 
 COPY . /app
 
