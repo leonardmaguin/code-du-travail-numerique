@@ -1,4 +1,4 @@
-# Code-du-travail Frontend [![CircleCI](https://circleci.com/gh/SocialGouv/code-du-travail-explorer.svg?style=svg)](https://circleci.com/gh/SocialGouv/code-du-travail-explorer)
+# Code-du-travail Frontend
 
 Ce dépôt de code contient le frontend du site web du Code du Travail Numérique.
 
