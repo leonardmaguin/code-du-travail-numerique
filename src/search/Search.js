@@ -120,6 +120,10 @@ const guessTagsFromQuery = query => {
   if (query.match("boulangerie")) {
     tags.branche = "boulangerie";
   }
+  if (query.match("contrat de travail")) {
+    tags.theme = "contrat de travail";
+  }
+
   return tags;
 };
 

@@ -12,7 +12,7 @@ const sum = array => array.reduce((a, c) => a + c, 0);
 const mean = array => sum(array) / array.length;
 
 const getVariance = array =>
-  mean(array.map(num => Math.pow(num - mean(array), 2))) || 0;
+  mean(array.map(num => Math.pow(num - mean(array), 2)));
 
 /*
 type TagValueCount = Number;
@@ -76,8 +76,10 @@ export const getTagData = (tag, values) => {
     // penalize when no distribution (count===1)
     score =
       (documents / ((count > 1 && Math.min(5, count)) || documents)) ** 2 /
-        (1 + 1 / variance) || 0;
+        (1 + 1 / variance) +
+      documents;
   //Math.min(5, count) * variance;
+  console.log({ values, allValues, variance, count, score });
   return {
     tag,
     values,
@@ -113,7 +115,8 @@ const sortBy = key => (a, b) => {
 const tagMatch = (tagValue, filterValue) =>
   tagValue === filterValue ||
   (Array.isArray(tagValue) && tagValue.indexOf(filterValue) > -1) ||
-  (filterValue === null && !tagValue);
+  (!tagValue && filterValue === null);
+//(filterValue === null || typeof filterValue === "undefined") && !tagValue);
 
 // filter array of docs based on filters (hash of properties)
 export const filterDocs = ({ docs, filters }) =>
@@ -121,9 +124,7 @@ export const filterDocs = ({ docs, filters }) =>
     Object.keys(filters).reduce(
       (curDocs, tag) =>
         curDocs.filter(
-          doc =>
-            doc.tags &&
-            (doc.tags[tag] === null || tagMatch(doc.tags[tag], filters[tag]))
+          doc => doc.tags && tagMatch(doc.tags[tag], filters[tag])
         ),
       docs
     )) ||
@@ -133,13 +134,13 @@ export const filterDocs = ({ docs, filters }) =>
 export const getNextQuestion = ({ docs, filters, tags }) => {
   // guess next tag in the dataset
   // remove current filters
-  const docsTags = getDocsByTag({ docs, tags })
-    .filter(
-      entry => (filters ? Object.keys(filters).indexOf(entry.tag) === -1 : true)
-    )
-    .filter(entry => entry.count > 1);
+  const docsTags = getDocsByTag({ docs, tags }).filter(
+    entry => (filters ? Object.keys(filters).indexOf(entry.tag) === -1 : true)
+  );
+  //.filter(entry => entry.count > 1);
   const sortedByScore = docsTags.sort(sortBy("score"));
   sortedByScore.reverse();
+  console.log({ sortedByScore });
   if (sortedByScore.length) {
     return sortedByScore[0];
   }

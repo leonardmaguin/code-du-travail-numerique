@@ -37,9 +37,13 @@ const NextQuestion = ({ data, filters, render }) => {
       // list of tag to use
       tags: [
         "branche",
+        "categorie",
+        "travailleur_particulier",
+        "critere_niveau",
         "profil",
         "theme",
-        "contrat",
+        "type_contrat",
+        "niveau",
         "region",
         "sousTheme",
         "type_entreprise"

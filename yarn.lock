@@ -748,7 +748,7 @@
   dependencies:
     "@sentry/types" "4.0.6"
 
-"@socialgouv/code-du-travail-css@^1.0.4":
+"@socialgouv/code-du-travail-css@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@socialgouv/code-du-travail-css/-/code-du-travail-css-1.0.4.tgz#990f30343e6bebbe0674b19750a96f9576bc6c63"
   integrity sha512-h5BI+B1tOoKOWT8rSxvJL1DyEZJxD3Teaoy3wOEC9cfquoc4zQ2ZsqdslGZ0+6OLCvwe0WviqfieXruS2abshg==

@@ -10,20 +10,26 @@ const tagsPolites = {
   theme: "Quel est le thème de votre question ?",
   sousTheme: "Pouvez-vous préciser le thème ?",
   branche: "De quelle branche professionelle s'agit-il ?",
-  contrat: "Pour quel type de contrat ?",
+  type_contrat: "Pour quel type de contrat ?",
   type_entreprise: "Pour quel type d'entreprise ?",
   region: "Dans quelle région ?",
-  profil: "Quel est votre statut ?"
+  profil: "Quel est votre statut ?",
+  categorie: "De quelle catégorie d'employé s'agit-il ?",
+  critere_niveau: "Pour quel niveau ?",
+  travailleur_particulier: "Travailleur particulier"
 };
 
 const tagsLabels = {
   theme: "Thème",
   sousTheme: "Sous-thème",
+  categorie: "Catégorie",
   branche: "Branche professionelle",
-  contrat: "Type de contrat",
+  type_contrat: "Type de contrat",
   type_entreprise: "Type d'entreprise",
   region: "Région",
-  profil: "Statut"
+  profil: "Statut",
+  critere_niveau: "Niveau",
+  travailleur_particulier: "Travailleur particulier"
 };
 
 const tagsValueLabel = {
@@ -54,7 +60,7 @@ const getTagValueLabel = (tag, value) =>
 // type_entreprise: Boulangerie industrielle -> industriel
 const getFilterAnswer = (tag, answer) => {
   const isFallbackValue = answer === tagsFallbacks[tag];
-  if (isFallbackValue) {
+  if (isFallbackValue || answer === "Autres") {
     return null;
   }
   const rawValue =

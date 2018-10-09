@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "next/router";
 
-import { Section, Alert } from "@socialgouv/code-du-travail-ui";
+import { Section, Alert, Badge } from "@socialgouv/code-du-travail-ui";
 
 import FeedbackForm from "../common/FeedbackForm.js";
 import SeeAlso from "../common/SeeAlso";
@@ -10,11 +10,34 @@ import DecisionTree from "../lib/decision/DecisionTree";
 import { getLabelBySource, getRouteBySource } from "../sources";
 import ContentComponents from "../content";
 
+const ContentTags = ({ tags }) => {
+  return (
+    tags &&
+    Object.keys(tags)
+      .reduce((a, tag) => {
+        if (Array.isArray(tag)) {
+          tag.forEach(t => {
+            a.push(t);
+          });
+        } else {
+          a.push(tag);
+        }
+        return a;
+      }, [])
+      .map(tag => (
+        <Badge style={{ marginRight: 5 }} key={tags[tag]}>
+          {JSON.stringify(tags[tag])}
+        </Badge>
+      ))
+  );
+};
+
 const ContentBody = ({ _source, excerpt, footer = null }) => (
   <article className={_source.source}>
     <header>
       <h3>{_source.title}</h3>
     </header>
+    {_source.tags && <ContentTags tags={_source.tags} />}
     <blockquote
       className="text-quote"
       dangerouslySetInnerHTML={{ __html: excerpt }}
@@ -44,6 +67,9 @@ const ResultItem = ({ _id, _source, highlight, query }) => {
   if (sourceRoute) {
     return (
       <li className="search-results__item">
+        <div style={/*debug*/ { color: "#ccc", fontSize: 8 }}>
+          {JSON.stringify(_source.tags)}
+        </div>
         <Link
           route="contenu"
           params={{
