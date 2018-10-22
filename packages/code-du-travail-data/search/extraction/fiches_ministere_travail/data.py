@@ -15,7 +15,7 @@ logger = settings.get_logger(__name__)
 JSON_FICHES = os.path.join(settings.BASE_DIR, 'dataset/fiches_ministere_travail/fiches-min-travail.json')
 
 FICHES_MINISTERE_TRAVAIL = []
-
+ 
 def populate_fiches_ministere_travail(json_file=JSON_FICHES):
     """
     Split each "fiche ministere travail" into multiple items: 1 item by subsection.
@@ -42,6 +42,15 @@ def populate_fiches_ministere_travail(json_file=JSON_FICHES):
                 prefix_title = fiche_title.split(':')[0]
 
             prefix_title = ' '.join(prefix_title.split())  # Replace multiple spaces by a single space.
+
+            # Index parent section
+            FICHES_MINISTERE_TRAVAIL.append({
+                    'title': prefix_title,
+                    'text': item['text_full'],
+                    'html': "",
+                    'url': item['url'],
+                    'anchor': ""
+                })
 
             for section in item['text_by_section']:
 
@@ -78,11 +87,12 @@ def populate_fiches_ministere_travail(json_file=JSON_FICHES):
 
                 # extract the anchor part from the url '#comment-et-pourquoi'
                 anchor, = re.findall(r'(#.+$)',  section['url'])
-
+                
+                # Index sub-sections
                 FICHES_MINISTERE_TRAVAIL.append({
                     'title': section_title,
                     'text': section['text'],
-                    'html': item.get("html"),
+                    'html': "",
                     'url': section['url'],
                     'anchor': anchor
                 })
