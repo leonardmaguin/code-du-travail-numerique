@@ -155,9 +155,9 @@
     "reponse": "Non, la période d'essai du CDD n'est pas renouvelable.",
     "tags": {
       "type_contrat": "CDD",
-      "themes": [3760],
-      "date_redaction": "26/09/2018"
+      "themes": [3760]
     },
+    "date_redaction": "26/09/2018",
     "redacteur": "cdtn"
   },
   {
@@ -165,9 +165,9 @@
     "reponse": "Non, la période d'essai du CTT n'est pas renouvelable.",
     "tags": {
       "type_contrat": "CTT",
-      "themes": [3760],
-      "date_redaction": "26/09/2018"
+      "themes": [3760]
     },
+    "date_redaction": "26/09/2018",
     "redacteur": "cdtn"
   },
   {

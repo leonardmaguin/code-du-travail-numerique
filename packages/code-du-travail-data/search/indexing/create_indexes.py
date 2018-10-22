@@ -147,6 +147,7 @@ def create_documents(index_name, type_name):
             'all_text': f"{val['title']} {val['text']}",
             'tags': val['tags'],
             'url': val['url'],
+            'date': val.get('date'),
         })
 
     logger.info("Load %s documents from fiches-ministere-travail", len(FICHES_MINISTERE_TRAVAIL))
@@ -160,6 +161,7 @@ def create_documents(index_name, type_name):
             'title': val['title'],
             'all_text': f"{val['title']} {val['text']}",
             'url': val['url'],
+            'date': val.get('date'),
         })
 
     for val in THEMES:
@@ -184,6 +186,7 @@ def create_documents(index_name, type_name):
                 'html': val["reponse"],
                 'title': val['question'],
                 'tags': tags,
+                'date': val.get('date'),
                 'author':  val['source'] if 'source' in val else 'DIRRECTE',
                 'all_text': f"{val['question']} {faq_text} {val.get('tags', {}).get('theme','')} {val.get('tags', {}).get('branche','')}",
             })
@@ -195,6 +198,7 @@ def create_documents(index_name, type_name):
         for val in data:
             faq_text = strip_html(val['reponse'])
             tags = parse_hash_tags(val.get("tags"))
+            logger.info(val['question'])
             body_data.append({
                 'source': 'faq',
                 'slug': slugify(val['question'], to_lower=True),
@@ -202,6 +206,7 @@ def create_documents(index_name, type_name):
                 'html': val["reponse"],
                 'title': val['question'],
                 'tags': tags,
+                'date': val['date_redaction'],
                 'all_text': f"{val['question']} {faq_text} {val.get('tags', {}).get('theme','')} {val.get('tags', {}).get('branche','')}",
             })
 
@@ -217,6 +222,7 @@ def create_documents(index_name, type_name):
                 'slug': slugify(val['titre'], to_lower=True),
                 'text': ''.join(val['questions']),
                 'html': val["html"],
+                'date': val.get('date'),
                 'all_text': f"{val['titre']} {' '.join(val['questions'])} {val['theme']} {val['type_de_contrat']} {val['profil']}",
           })
 
@@ -230,7 +236,7 @@ def create_documents(index_name, type_name):
                 'slug': slugify(val['code'], to_lower=True),
                 'text': ' '.join(val['questions']),
                 'themes': val['themes'],
-                'date': val['date'],
+                'date': val.get('date'),
                 'branche': val['branche'],
                 'all_text': f"{val['titre']} {' '.join(val['questions'])} {val['theme']} {val['type_de_contrat']}, {val['catégorie']}, {val['travailleur_particulier']}, {val['branche']}",
           })

@@ -1,11 +1,12 @@
 [
   {
-    "titre": "Modèle de certificat de travail", 
+    "titre": "Modèle de certificat de travail",
     "questions": ["comment rédiger un certificat de travail ?"],
     "theme": "certificat de travail",
     "type_de_contrat": "CDI",
     "profil": "employeur",
-    "filename": "Modèle_certificat_de_travail.docx"
+    "filename": "Modèle_certificat_de_travail.docx",
+    "date": "22/10/2018"
   },
   {
     "titre": "Versement de salaire",
@@ -13,7 +14,8 @@
     "theme": "salaire",
     "type_de_contrat": "CDI, CDD",
     "profil": "salarié",
-    "filename": "Modèle_demande_paiement_salaire_salarié.docx"
+    "filename": "Modèle_demande_paiement_salaire_salarié.docx",
+    "date": "22/10/2018"
   },
   {
     "titre": "Rupture de période d'essai",
@@ -21,7 +23,8 @@
     "theme": "période d'essai",
     "type_de_contrat": "CDI",
     "profil": "salarié",
-    "filename": "Modèle_fin_période_essai-initiative_du_salarié.docx"
+    "filename": "Modèle_fin_période_essai-initiative_du_salarié.docx",
+    "date": "22/10/2018"
   },
   {
     "titre": "Rupture de période d'essai",
@@ -29,7 +32,8 @@
     "theme": "période d'essai",
     "type_de_contrat": "CDI",
     "profil": "employeur",
-    "filename": "Modèle_fin_période_essai-initiative_employeur.docx"
+    "filename": "Modèle_fin_période_essai-initiative_employeur.docx",
+    "date": "22/10/2018"
   },
   {
     "titre": "Reçu de solde de tout compte",
@@ -37,8 +41,9 @@
     "theme": "fin de contrat",
     "type_de_contrat": "CDI, CDD",
     "profil": "employeur",
-    "filename": "Modèle_Recu_solde_de_tout_compte.docx"
-    
+    "filename": "Modèle_Recu_solde_de_tout_compte.docx",
+    "date": "22/10/2018"
+
   },
   {
     "titre": "Renouvellement de période d'essai",
@@ -46,7 +51,7 @@
     "theme": "période d'essai",
     "type_de_contrat": "CDI",
     "profil": "employeur",
-    "filename": "Modèle_renouvellement_période_essai-initiative_employeur.docx"
-    
+    "filename": "Modèle_renouvellement_période_essai-initiative_employeur.docx",
+    "date": "22/10/2018"
   }
 ]
