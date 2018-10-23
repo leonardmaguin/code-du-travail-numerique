@@ -21,8 +21,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { data } = this.props;
-    console.log(data._source)
+    const { data } = this.props; 
     let author;
     switch (data._source.author) {
       case "DGT":
