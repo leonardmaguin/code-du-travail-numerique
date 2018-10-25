@@ -13,11 +13,12 @@ from search.extraction.conventions_collectives_nationales.data import CONVENTION
 from search.extraction.fiches_ministere_travail.data import FICHES_MINISTERE_TRAVAIL
 from search.extraction.fiches_service_public.data import FICHES_SERVICE_PUBLIC
 from search.extraction.themes_front.data import THEMES
-from search.indexing import analysis
+#from search.indexing import analysis
 from search.indexing.strip_html import strip_html
 
-from search.indexing.mappings.code_du_travail_numerique import code_du_travail_numerique_mapping
+#from search.indexing.mappings.code_du_travail_numerique import code_du_travail_numerique_mapping
 
+from search.indexing.explore import analysis1 as analysis
 
 console = logging.StreamHandler()
 formatter = logging.Formatter(fmt='[%(levelname)s - %(funcName)s] %(message)s')
@@ -261,5 +262,5 @@ if __name__ == '__main__':
 
     name = 'code_du_travail_numerique'
     drop_index(name)
-    create_index(index_name=name, mapping_name=name, mapping=code_du_travail_numerique_mapping)
+    create_index(index_name=name, mapping_name=name, mapping=analysis.code_du_travail_numerique_mapping)
     create_documents(index_name=name, type_name=name)
