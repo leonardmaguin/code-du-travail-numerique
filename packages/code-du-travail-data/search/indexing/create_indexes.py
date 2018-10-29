@@ -18,7 +18,7 @@ from search.indexing.strip_html import strip_html
 
 #from search.indexing.mappings.code_du_travail_numerique import code_du_travail_numerique_mapping
 
-from search.indexing.explore import analysis1 as analysis
+from search.indexing.explore import analysisben0 as analysis
 
 console = logging.StreamHandler()
 formatter = logging.Formatter(fmt='[%(levelname)s - %(funcName)s] %(message)s')
